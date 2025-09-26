@@ -1,0 +1,9 @@
+Submission 1: Group Information. (1 point if submitted correctly and on time) . You must submit the following team information on Moodle by the first due date:
+
+Github: The URL of your private  Github repository containing the project.
+
+Please add instructor (moar82) and TA username to your repository.
+
+Team setup: List all team members, indicating which of the individual parts above are assigned to each team member. An individual task can only be assigned to one team member and the marks (50% of the total marks) for that task will go to the designated team member only.
+
+
