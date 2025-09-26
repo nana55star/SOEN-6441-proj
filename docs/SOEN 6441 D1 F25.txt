@@ -1,0 +1,132 @@
+﻿GINA CODY School of Engineering and Computer Science  
+Department of Computer Science and Software Engineering
+Concordia University
+SOEN 6441 section U,W--- Fall 25
+Project Delivery# 1 (v1.1)
+Due date #1 (Team Information) due date: October 3rd #2 (Coding Submission) due date:  November 7th
+
+
+
+
+This is the first of two programming assignments in our course. Note that the assignments are not ‘stand-alone’, but rather build on top of each other to form a bigger project.
+The assignments focus on applying the concepts covered in the lectures, such as functional programming, lambdas, streams, unit testing, asynchronous programming with futures, and actor-based programming, in the context of a web application.
+The assignments must be developed based on the Play Framework, a full-stack reactive framework for the JVM, which is also used in large-scale commercial deployments by companies such as LinkedIn, Morgan Stanley, and Walmart.
+Please note that this assignment consists of both a group component and an individual component. Your group must submit a single application. Your marks will be based on the group work (50%) and your individual contribution (50%).
+
+
+Play Application: “NotiLytics” (Group Part–50%). The overall goal is to develop a web application that can analyze the live feed of the News API.
+The group part includes the setup of the overall framework for this web app, as well as a simple web interface that takes a string with one or multiple search keywords (input text field at the top of the page, see Figure 1) and then displays the latest 10 articles matching the keyword(s) below the search field, and sorted based on the user’s preference. Each match must include the title with a hyperlink to the article, the source with a hyperlink to the source website (see details below in individual tasks), and the published date (converted to  EDT time).  Note that you must search for the whole phrase (and not each keyword individually).  
+  
+
+Figure 1. NotiLytics home page
+
+
+The user must be able to enter new search terms on the output page, which will result in 10 more results being displayed (i.e., a second search will add 10 more results above the 10 submissions from the first search, and so on – see Figure 2). Keep at most 10 search queries.
+You have to use the official news API to search for articles.  Read the notes at the end of this document. 
+  
+
+Figure 2. NotiLytics page after two searches, showing two sets of results with 10 submissions each
+
+
+Process the results using the Java 8+ Streams API to add hyperlinks to the article and the source website.
+Note: for this assignment, you do not need to stream updates to the user interface. In other words, the front-end page is static until a “refresh” (or new search) is triggered.
+
+
+Individual Part (50%). In addition to the group part above, each team member has to work on one of the following features. Your team must decide who works on which part – two members cannot work on the same task!
+If your team has fewer than five members, only pick one individual task per team member. Note that the individual part counts for 50% of the overall assignment marks.
+1. Source website profile: Create a web page containing all available profile information about a source website, as well as the last 10 articles of that page. This profile page must be hyperlinked with the source name from the results on the main search page.
+2. Word stats: For a search query (one or multiple keywords), display word-level statistics for the 50 latest articles (based on availability), counting all unique words in descending order (by frequency of the words). This statistics page must be hyperlinked from the search terms above the results. You must use the Java 8+ Streams API to process the article’s description field from the news API.
+3. News Sources: Add a button to the home page, and display the news sources available, which can be filtered based on the following criteria: country, category (e.g., sports, science, etc. ), or language.
+4. Article Sentiment: Given a stream of (up to 50) articles, determine if their descriptions are overall happy ’:-)’, sad ’:-(’ or neutral ’:-|’. This sentiment will be displayed on the main search page for each search query (see Figure 2). Process the stream of articles, finding happy and sad words, emojis, and emoticons, and counting them (create your own “happy/sad” lists). If a submission contains more than 70% “happy” strings, return a happy sentiment :-), for more than 70% sad, return an unhappy emoticon :-(, otherwise a neutral one :-|. For a stream of articles, calculate the average of the individual articles’ results. You must use the Java 8 Streams API to process the submissions.
+5. Description readability: Given a stream of (up to 50) articles, calculate the description’s readability using Flesh-Kincaid Grade Level and the  Flesch Reading Score (see Figure 2). Also, calculate the readability average of all the articles’ descriptions listed in the search terms. You must use the Java 8+ Streams API to process the results. 
+
+
+Coding guidelines.        Your submission must satisfy the following requirements (these apply to both the group and the individual work):
+Play Framework. Note the following general guidelines for using the Play Framework and building the application:
+   1. Your application must be developed on the Play framework.
+   2. It must be possible to build and run your app using the standard sbt run command.
+   3. Any required third-party libraries must be automatically resolved through sbt.
+   4. The standard build targets (sbt run/test/jacoco/javadoc/clean) must all work correctly.
+   5. Do not put business logic into the controller. Use dedicated model classes (MVC pattern) for your application functions.
+   6. Write a single controller for your app, integrating the individual parts defined below.
+   7. Make sure your server correctly handles user sessions [1]for multiple searches – i.e., if you open your app from a second browser, you must not see the search results from an ongoing session!
+   8. Do not fetch the same submissions multiple times (e.g., for passing them between different tasks) – develop an appropriate caching strategy for your application.
+You can set up a DevOps server for your team (e.g., using Jenkins) or use GitHub Actions, but that will not be evaluated.
+Documentation. The following guidelines concern your documentation:
+1. Document all your classes and methods with Javadoc.
+2. This includes private methods and unit tests!
+3. Make sure all classes and methods include an @author tag (both for group and individual work).
+4. Include the generated HTML Javadoc in your submission (make sure you generate it for the private methods as well).
+Reactive Programming. The following guidelines refer to using reactive programming techniques. These will become especially important for the second delivery (second part of the project), so you should do your best to get it right the first time.
+1. Your controller actions must be asynchronous (non-blocking), using Java 8’s CompletionStage<T> / CompletableFuture<T>.
+2. Do not use .get()/.join(), thread.sleep, or similar to block for a future’s result anywhere in your code (only accepted exceptions are unit tests, see below)!
+Note: any blocking code in your app will lead to significant mark reduction!
+Testing. Testing your code is a very important part of the project. Make sure you write your unit tests at the same time as you implement your features. Code that is not tested will count as not implemented! – In other words, if you completely implement the whole project, but do not have a single test, your submission will receive 0 marks! Create JUnit tests for all your classes. You must have tests for every method in your controller and every controller action, as well as any additional classes you wrote. Compute your test coverage with JaCoCo. You must have 100% test coverage of your classes, methods, and lines (excluding classes automatically generated by Play).
+1. Within a test, you can use .get()/.join() to wait for a result.
+2. Never call the live news API from a unit test; use a mock class for testing instead. For testing your classes using the news API, you must use either your own, factory-generated mock class (you can use Dependency Injection (DI) with the Google Guice library) or use the Mockito framework.
+3. Your unit tests must be properly designed by finding the equivalence classes and doing partition testing. A unit test that does not properly check the result values (e.g., only checking if a result is non-empty, rather than comparing the values) will count as not written for test coverage!
+
+
+Submission. There are two deadlines, the first for submitting the information about your team and the individual tasks distribution; the second for delivering your web app. Note that for each submission, only one upload per team is required.
+Submission 1: Group Information. (1 point if submitted correctly and on time). You must submit the following team information on Moodle by the first due date:
+GitHub: The URL of your GitHub repository containing the project.
+Team setup: List all team members, indicating which of the individual parts above are assigned to each team member. An individual task can only be assigned to one team member, and the marks (50% of the total marks) for that task will go to the designated team member only.
+Submission 2: Code. You must submit your code electronically on Moodle by the due date (late submission will incur a penalty, see the course outline for details). Include a signed (by all team members) Expectation of originality form[2] with your submission.
+Demo. You must also demo your code to your TA during labs or POD sessions (time slots for the demos will be reserved through Moodle). Note that all group members must be present for the demo and ready to answer questions about the project.
+Submission + Demo = 22 points.   More details about the grading scheme can be found in the Rubric here.
+
+
+________________
+
+
+
+
+Notes
+You must have a news API account to obtain an API key
+
+
+Example of api request to search articles based on a phrase:
+
+
+This example retrieves the first 100 search results associated with the phrase “fall colors” order by popularity
+ 
+https://newsapi.org/v2/everything?q=%22fall%20colors%22&sortBy=popularity&apiKey=<insert your key here>
+
+
+Sample Result:
+
+
+{
+  "status": "ok",
+  "totalResults": 25,
+  "articles": [
+    {
+      "source": {
+        "id": null,
+        "name": "Apartment Therapy"
+      },
+      "author": "Cullen Ormond",
+      "title": "This Designer-Approved Fall Color Palette Will Make Autumn Decorating a Breeze",
+      "description": "You don't necessarily have to paint!\nREAD MORE...",
+      "url": "https://www.apartmenttherapy.com/fall-color-palette-37503979",
+      "urlToImage": "https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fill,g_auto,w_1500,ar_3:2/at%2Fhouse%20tours%2F2023-House-Tours%2F2023-June%2Fally-d%2Ftours-nyc-ally-d-09",
+      "publishedAt": "2025-08-26T15:30:00Z",
+      "content": "We independently select these products—if you buy from one of our links, we may earn a commission. All prices were accurate at the time of publishing.\r\nFall is (hopefully!) fast approaching, and you … [+4783 chars]"
+    }
+]
+}
+	
+
+References.
+
+
+1. News API V2.  https://newsapi.org/docs/endpoints/sources 
+2. Flesch Kincaid Calculator. https://goodcalculators.com/flesch-kincaid-calculator/ 
+3. Free sentiment analysis tool.  https://text2data.com/Demo 
+
+
+
+
+________________
+[1] To ensure that search results from different clients (browsers) are isolated, store search-related data in the session, but avoid using global or shared objects like static variables, which are common across all sessions.
+[2] See https://www.concordia.ca/ginacody/students/academic-services/expectation-of-originality.html
