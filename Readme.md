@@ -8,7 +8,7 @@ Tasks to be assigned for submission 1:
 
 Alex - 40321783 - Task #
 
-Nirvana - xxx - Task #
+Nirvana - xxx - Task # 3: News Sources
 
 Mustafa - xxx - Task #
 
