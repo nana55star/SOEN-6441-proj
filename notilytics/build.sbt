@@ -1,4 +1,6 @@
-name := """NotiLytics"""
+
+name := "NotiLytics"
+
 organization := "com.example"
 
 version := "1.0-SNAPSHOT"
