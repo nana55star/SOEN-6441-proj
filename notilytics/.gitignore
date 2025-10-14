@@ -1,12 +1,32 @@
-logs
-target
-/.bsp
-/.idea
-/.idea_modules
-/.classpath
-/.project
-/.settings
-/RUNNING_PID
-*.iml
-out/
+# === Play Framework / sbt ===
 target/
+dist/
+logs/
+RUNNING_PID
+.bsp/
+.project
+.settings/
+.idea_modules/
+.idea/
+*.iml
+.classpath
+.cache/
+.history/
+.scala_dependencies
+
+# === IntelliJ IDEA ===
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+.DS_Store
+
+# === OS Files ===
+Thumbs.db
+.DS_Store
+
+# === Build Artifacts ===
+/target/
+/project/target/
+/project/project/
