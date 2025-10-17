@@ -1,5 +1,13 @@
-@()
+@(title: String)
 
-@main("Welcome to Play") {
-  <h1>Welcome to Play!</h1>
+@main(title) {
+  <h1>@title</h1>
+
+  <form method="GET" action="/search">
+    <input type="text" name="q" placeholder="Enter keywords..." required>
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="results"></div>
 }
+
